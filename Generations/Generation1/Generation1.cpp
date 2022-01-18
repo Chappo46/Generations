@@ -17,7 +17,8 @@ void Generation1::Init(GameController& controller)
 		std::vector<Particle> tempVec;
 		for(int j = 0; j<640;j++)
 		{
-			tempVec.push_back(Particle(j,i,Color::Green()));
+//			tempVec.push_back(Particle(j,i,Color::Black()));
+			tempVec.push_back(Particle(j,i,Color(rand()%255,rand()%255,rand()%255,255)));
 		}
 		particles.push_back(tempVec);
 	}
@@ -75,7 +76,7 @@ void Generation1::Update(uint32_t dt)
 
 //	}
 
-	if(counter % 20 ==0)
+	if(counter % 7 ==0)
 	{
 		for(int i = 0; i<360;i++)
 		{
