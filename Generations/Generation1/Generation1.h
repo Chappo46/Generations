@@ -14,6 +14,16 @@
 #include "Particle.h"
 #include <vector>
 
+enum G1_Mode
+{
+	DEFAULT = 0,
+	ALL,
+	FRAC,
+	MELT,
+	LINE,
+	RIVER
+};
+
 class Generation1: public Generation
 {
 public:
@@ -22,6 +32,9 @@ public:
 	virtual void Draw(Screen& screen) override;
 	virtual const std::string& GetName() const override;
 private:
+	bool changeModes = false;
+	int changeTime = 5000;
+	G1_Mode mode = DEFAULT;
 	std::vector<std::vector<Particle>> particles;
 };
 

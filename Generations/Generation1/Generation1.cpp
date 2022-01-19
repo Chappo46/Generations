@@ -17,10 +17,20 @@ void Generation1::Init(GameController& controller)
 		std::vector<Particle> tempVec;
 		for(int j = 0; j<640;j++)
 		{
-//			tempVec.push_back(Particle(j,i,Color::Black()));
-			tempVec.push_back(Particle(j,i,Color(rand()%255,rand()%255,rand()%255,255)));
+			tempVec.push_back(Particle(j,i,Color::Green()));
+//			tempVec.push_back(Particle(j,i,Color(rand()%255,rand()%255,rand()%255,255)));
 		}
 		particles.push_back(tempVec);
+	}
+
+	mode = DEFAULT;
+//	changeModes = true;
+
+	if(mode == FRAC)
+	{
+		int y = rand() % 360;
+		int x = rand() % 640;
+		particles[y][x].toggle();
 	}
 }
 
@@ -28,53 +38,14 @@ void Generation1::Update(uint32_t dt)
 {
 //	for(int i = 0; i<1;i++)
 //	{
+	if(mode != FRAC)
+	{
 		int y = rand() % 360;
 		int x = rand() % 640;
 //		Color c = Color(rand()%255,rand()%255,rand()%255,255);
 //		particles[y][x].setColor(c);
 		particles[y][x].toggle();
-//		if(x+1<640)
-//		{
-//			if(y+1<360)
-//			{
-////				particles[y+1][x+1].setColor(c);
-//				particles[y+1][x+1].toggle();
-//			}
-//			if(y-1>=0)
-//			{
-////				particles[y-1][x+1].setColor(c);
-//				particles[y-1][x+1].toggle();
-//			}
-////			particles[y][x+1].setColor(c);
-//			particles[y][x+1].toggle();
-//		}
-//		if(x-1>0)
-//		{
-//			if(y+1<360)
-//			{
-////				particles[y+1][x-1].setColor(c);
-//				particles[y+1][x-1].toggle();
-//			}
-//			if(y-1>=0)
-//			{
-////				particles[y-1][x-1].setColor(c);
-//				particles[y-1][x-1].toggle();
-//			}
-////			particles[y][x-1].setColor(c);
-//			particles[y][x-1].toggle();
-//		}
-//		if(y+1<360)
-//		{
-////			particles[y+1][x].setColor(c);
-//			particles[y+1][x].toggle();
-//		}
-//		if(y-1>=0)
-//		{
-////			particles[y-1][x].setColor(c);
-//			particles[y-1][x].toggle();
-//		}
-
-//	}
+	}
 
 	if(counter % 7 ==0)
 	{
@@ -86,43 +57,68 @@ void Generation1::Update(uint32_t dt)
 				{
 					if(j+1<640)
 					{
-//						if(i+1<360)
-//						{
-//							particles[i+1][j+1].toggle();
-//							if(particles[i+1][j+1].isOn()) particles[i+1][j+1].setColor(particles[i][j].getColor());
-//						}
-//						if(i-1>=0)
-//						{
-//							particles[i-1][j+1].toggle();
-//							if(particles[i-1][j+1].isOn()) particles[i-1][j+1].setColor(particles[i][j].getColor());
-//						}
-						particles[i][j+1].toggle();
-						if(particles[i][j+1].isOn()) particles[i][j+1].setColor(particles[i][j].getColor());
+						if(mode == ALL)
+						{
+							if(i+1<360)
+							{
+								particles[i+1][j+1].toggle();
+								if(particles[i+1][j+1].isOn()) particles[i+1][j+1].setColor(particles[i][j].getColor());
+							}
+						}
+						if(mode == ALL)
+						{
+							if(i-1>=0)
+							{
+								particles[i-1][j+1].toggle();
+								if(particles[i-1][j+1].isOn()) particles[i-1][j+1].setColor(particles[i][j].getColor());
+							}
+
+						}
+						if(mode == DEFAULT || ALL || FRAC||LINE)
+						{
+							particles[i][j+1].toggle();
+							if(mode != LINE)if(particles[i][j+1].isOn()) particles[i][j+1].setColor(particles[i][j].getColor());
+						}
 					}
 					if(j-1>0)
 					{
-//						if(i+1<360)
-//						{
-//							particles[i+1][j-1].toggle();
-//							if(particles[i+1][j-1].isOn()) particles[i+1][j-1].setColor(particles[i][j].getColor());
-//						}
-//						if(i-1>=0)
-//						{
-//							particles[i-1][j-1].toggle();
-//							if(particles[i-1][j-1].isOn()) particles[i-1][j-1].setColor(particles[i][j].getColor());
-//						}
-						particles[i][j-1].toggle();
-						if(particles[i][j-1].isOn())particles[i][j-1].setColor(particles[i][j].getColor());
+						if(mode == ALL)
+						{
+							if(i+1<360)
+							{
+								particles[i+1][j-1].toggle();
+								if(particles[i+1][j-1].isOn()) particles[i+1][j-1].setColor(particles[i][j].getColor());
+							}
+						}
+
+						if(mode == ALL)
+						{
+							if(i-1>=0)
+							{
+								particles[i-1][j-1].toggle();
+								if(particles[i-1][j-1].isOn()) particles[i-1][j-1].setColor(particles[i][j].getColor());
+							}
+						}
+
+						if(mode == DEFAULT || ALL|| FRAC||LINE)
+						{
+							particles[i][j-1].toggle();
+							if(mode != LINE)if(particles[i][j-1].isOn())particles[i][j-1].setColor(particles[i][j].getColor());
+
+						}
 					}
-					if(i+1<360)
+					if(mode == DEFAULT || ALL|| FRAC)
 					{
-						particles[i+1][j].toggle();
-						if(particles[i+1][j].isOn()) particles[i+1][j].setColor(particles[i][j].getColor());
-					}
-					if(i-1>=0)
-					{
-						particles[i-1][j].toggle();
-						if(particles[i-1][j].isOn())particles[i-1][j].setColor(particles[i][j].getColor());
+						if(i+1<360)
+						{
+							particles[i+1][j].toggle();
+							if(particles[i+1][j].isOn()) particles[i+1][j].setColor(particles[i][j].getColor());
+						}
+						if(i-1>=0)
+						{
+							particles[i-1][j].toggle();
+							if(particles[i-1][j].isOn())particles[i-1][j].setColor(particles[i][j].getColor());
+						}
 					}
 				}
 				particles[i][j].oscillate();
@@ -131,6 +127,12 @@ void Generation1::Update(uint32_t dt)
 	}
 
 	counter++;
+	if(counter > changeTime && changeModes )
+	{
+		mode = static_cast<G1_Mode>(rand()%5);
+		changeTime = rand()%10000;
+		counter = 0;
+	}
 
 }
 
